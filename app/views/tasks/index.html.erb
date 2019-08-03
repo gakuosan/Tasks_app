@@ -1,10 +1,19 @@
-<h1>タスクの作成</h1>
+<h1>タスク一覧</h1>
 
-<%= form_for(@task) do |f| %>
-  <%= f.label :content, 'タスク' %>
-  <%= f.text_field :content %>
+<table>
+  <thead>
+    <tr>
+      <th>タスク名</th>
+      <th>説明</th>
+    </tr>
+  </thead>
 
-  <%= f.submit '投稿' %>
-<% end %>
-
-<%= link_to '一覧に戻る', tasks_path %>
+  <tbody>
+    <% @tasks.each do |task| %>
+    <tr>
+      <td><%= task.title %></td>
+      <td><%= task.description %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
