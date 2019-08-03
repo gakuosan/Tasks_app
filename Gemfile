@@ -66,3 +66,8 @@ gem 'kaminari'
 
 gem 'bootstrap', '~> 4.1.1'
 gem 'jquery-rails'
+
+#検索機能を追加
+gem 'ransack'
+
+gem 'bcrypt', '~> 3.1.11'

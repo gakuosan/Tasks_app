@@ -9,3 +9,8 @@
 <% end %>
 
 <%= link_to '一覧に戻る', tasks_path %>
+
+
+<% @tasks.each do |t| %>
+  <p><%= t.task %></p>
+<% end %>
