@@ -1,7 +1,9 @@
 class TasksController < ApplicationController
+  PER = 10
 
 def index
-  @tasks = Task.all
+  #@tasks = Task.all
+  @tasks = Task.page(params[:page]).per(PER)
 end
 
 def show
@@ -13,7 +15,10 @@ def new
 end
 
 def create
-   @task = Task.new(task_params)
+   #@task = Task.new(task_params
+   @task = current_user.tasks.build(task_params)
+   @task.user_id = current_user.id
+
 
    if @task.save
      flash[:success] = 'タスクが投稿されました'
@@ -23,6 +28,13 @@ def create
      render :new
    end
  end
+
+ def confirm
+    #@task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
+    #binding.pry
+    render :new if @task.invalid?
+  end
 
 def edit
   @task = Task.find(params[:id])

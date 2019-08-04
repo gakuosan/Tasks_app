@@ -11,6 +11,8 @@
 <%= link_to '一覧に戻る', tasks_path %>
 
 
-<% @tasks.each do |t| %>
+<% @search_tasks.each do |task| %>
   <p><%= t.task %></p>
+
+  <%= paginate @tasks %>
 <% end %>
