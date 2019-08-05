@@ -71,3 +71,9 @@ gem 'jquery-rails'
 gem 'ransack'
 
 gem 'bcrypt', '~> 3.1.11'
+
+
+gem 'kaminari-bootstrap', '~> 3.0.1'
+
+gem 'slim-rails'
+gem 'html2slim'
