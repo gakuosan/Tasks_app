@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show]
 
+  def index
+    @users = User.all
+  end
+
 
   def new
     @user = User.new
@@ -10,7 +14,8 @@ class UsersController < ApplicationController
   def create
   @user = User.new(user_params)
   if @user.save
-    redirect_to user_path(@user.id)
+    redirect_to users_path(@user), notice: "ユーザー「#{@user.name}」を登録しました。"
+
   else
     render 'new'
   end
@@ -21,6 +26,12 @@ end
    @user = User.find(params[:id])
    @task = Task.find_by(id: params[:id])
  end
+
+ def destroy
+  @user = User.find(params[:id])
+  @user.destroy
+  redirect_to users_path(@user), notice: "ユーザー「#{@user.name}」を削除しました。"
+end
 
 
   private

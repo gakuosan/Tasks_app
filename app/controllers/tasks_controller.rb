@@ -2,10 +2,19 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
   PER = 8
 
+  #def index
+    #@tasks = Task.all
+    #@tasks = current_user.tasks
+
+    #@tasks = Task.page(params[:page]).per(PER)
+  #end
   def index
-    @tasks = Task.all
-    @tasks = Task.page(params[:page]).per(PER)
+  #@tasks = current_user.tasks
+  @q = current_user.tasks.ransack(params[:q])
+  @tasks = @q.result(distinct: true).recent
   end
+
+
 
   def show
   @task = Task.find_by(id: params[:id])
@@ -37,7 +46,7 @@ end
  def create
    @task = current_user.tasks.build(task_params)
    if @task.save
-     redirect_to task_path(@task), notice: t('common.flash.created')
+     redirect_to task_path(@task), notice: ('common.flash.created')
    else
      flash.now[:alert] = @task.errors.full_messages.join('。')
      @task.errors.delete(:content)
@@ -86,6 +95,11 @@ def destroy
   redirect_to @task
 end
 
+def confirm_new
+   @task = current_user.tasks.new(task_params)
+   render :new unless @task.valid?
+end
+
 private
 
 def task_params
@@ -97,5 +111,8 @@ def set_task
   @task = Task.find(params[:id])
 end
 
+def set_task
+  @task = current_user.tasks.find(params[:id])
+end
 
 end
