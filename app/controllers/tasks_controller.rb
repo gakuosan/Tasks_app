@@ -9,9 +9,7 @@ class TasksController < ApplicationController
     #@tasks = Task.page(params[:page]).per(PER)
   #end
   def index
-  #@tasks = current_user.tasks
-  @q = current_user.tasks.ransack(params[:q])
-  @tasks = @q.result(distinct: true).recent
+  @tasks = current_user.tasks
   end
 
 
@@ -104,12 +102,8 @@ private
 
 def task_params
   params.require(:task).permit(:content)
-  #params.require(:task).permit(:content)
 end
 
-def set_task
-  @task = Task.find(params[:id])
-end
 
 def set_task
   @task = current_user.tasks.find(params[:id])
