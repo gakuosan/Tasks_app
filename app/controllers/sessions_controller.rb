@@ -21,4 +21,8 @@ class SessionsController < ApplicationController
     redirect_to new_session_path
   end
 
+  def session_params
+    params.require(:session).permit(:email, :password)
+  end
+
 end

@@ -8,11 +8,19 @@ class TasksController < ApplicationController
 
     #@tasks = Task.page(params[:page]).per(PER)
   #end
+  #def index
+  #@tasks = current_user.tasks
+  #end
+
   def index
-  @tasks = current_user.tasks
+  @q = current_user.tasks.ransack(params[:q])
+  @tasks = @q.result(distinct: true).page(params[:page])
+
+  respond_to do |format|
+    format.html
+    format.csv { send_data @tasks.generate_csv, filename: "tasks-#{Time.zone.now.strftime('%Y%m%d%S')}.csv" } # --- ②
   end
-
-
+ end
 
   def show
   @task = Task.find_by(id: params[:id])
@@ -25,25 +33,11 @@ def new
   @task = Task.new
 end
 
-#def create
-   #@task = Task.new(task_params）
-   #@task = current_user.tasks.build(task_params)
-   #@task.user_id = current_user.id
-
-
-   #if @task.save
-     #flash[:success] = 'タスクが投稿されました'
-     #edirect_to @task
-     #redirect_to :tasks
-   #else
-     #flash.now[:danger] = 'タスクが投稿されませんでした'
-     #render :new
-   #end
- #end
-
- def create
+def create
    @task = current_user.tasks.build(task_params)
+   #binding.pry
    if @task.save
+   #binding.pry
      redirect_to task_path(@task), notice: ('common.flash.created')
    else
      flash.now[:alert] = @task.errors.full_messages.join('。')
@@ -51,6 +45,17 @@ end
      render :new
    end
  end
+
+ #def creates
+   #@task = current_user.tasks.build(task_params)
+   #if @task.save
+     #redirect_to task_path(@task), notice: ('common.flash.created')
+   #else
+     #flash.now[:alert] = @task.errors.full_messages.join('。')
+     #@task.errors.delete(:content)
+     #render :new
+   #end
+
 
  def confirm
     #@task = Task.new(task_params)

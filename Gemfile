@@ -77,3 +77,10 @@ gem 'kaminari-bootstrap', '~> 3.0.1'
 
 gem 'slim-rails'
 gem 'html2slim'
+
+#BindigpryのGemを入れる
+group :development, :test do
+  gem 'pry-rails'
+  gem 'pry-byebug'
+  gem 'pry-doc'
+end
